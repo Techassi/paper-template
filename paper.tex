@@ -1,0 +1,23 @@
+\documentclass[
+    fontsize=10pt,              % default font size 10pt
+    paper=a4,                   % DIN A4 page format
+    numbers=noenddot,           % remove dots behind chapter numbers (e.g. 1.5 not 1.5.)
+    listof=entryprefix,         % add entry name to figures, tables, etc.
+    listof=nochaptergap,        % no chapter gap for figures, tables, etc.
+    parskip=half                % half line spacing between paragraphs
+]{article}
+
+\input{preamble}                % Load preamble
+
+\begin{document}
+
+\input{framework/title}         % Title
+
+\begin{paper}
+    \input{content/abstract}
+    \input{content/introduction}
+
+    \input{framework/references}
+\end{paper}
+
+\end{document}
