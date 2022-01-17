@@ -163,3 +163,92 @@
 }
 {\upshape \sffamily \textbf{Keywords: \docKeywords}
 }
+
+% ##################################################
+% CUSTOM COMMANDS
+% ##################################################
+\usepackage{etoolbox} % Multiple tools like loops
+\usepackage{intcalc}  % Expandable arithmetic operations
+\usepackage{xparse}   % Parse lists
+
+% -------
+% Helpers
+% -------
+
+% If the provided string is not blank (empyt or only spaces) parameter #2 is displayed, otherwise #3
+\newcommand{\ifnotblank}[3]{
+    \expandafter\notblank\expandafter{#1}{#2}{#3}%
+}
+
+% -------
+% Authors
+% -------
+
+% Variables
+\newcommand{\authorList}{}
+\newcounter{totalAuthorCount}
+\newcounter{authorCounter}
+\setcounter{authorCounter}{1}
+\newcounter{authorIndex}
+
+% \setAuthors let's the user set all authors as a comma-separated list
+\newcommand{\setAuthors}[1]{
+    \renewcommand{\authorList}{#1}
+    \expandafter\forcsvlist\expandafter\countAuthors\expandafter{\authorList}
+}
+
+% \countAuthors counts the total amount of authors
+\newcommand{\countAuthors}[1]{
+    \stepcounter{totalAuthorCount}
+}
+
+% \printAuthors let's the user print out the author list as a grid table
+\newcommand{\printAuthors}{
+    \begin{center}
+        \begin{tabularx}{0.9\textwidth}{ X X X }
+            \expandafter\internalPrintAuthors\expandafter{\authorList}
+        \end{tabularx}
+    \end{center}
+}
+
+% \internalPrintAuthors iterates the list via \ProcessList
+\NewDocumentCommand{\internalPrintAuthors}{ >{\SplitList{,}} m }{%
+    \ProcessList{#1}{\printAuthorEmailTouple}
+}
+
+% \printAuthorEmailTouple prints the <Author, E-Mail> touple
+\NewDocumentCommand{\printAuthorEmailTouple}{ >{\SplitList{,}} m }{%
+    \ifthenelse{\equal{\intcalcMod{\value{authorCounter}}{3}}{0}}{%
+        \makecell{
+            \ProcessList{#1}{\splitAuthorEmailTouple}
+        }
+        \ifthenelse{\value{authorCounter}<\value{totalAuthorCount}}{\\}{}
+    }{%
+        \makecell{
+            \ProcessList{#1}{\splitAuthorEmailTouple}
+        }
+        \ifthenelse{\(\value{totalAuthorCount}>1 \AND \value{authorCounter}<\value{totalAuthorCount}\)}{&}{}
+    }%
+    \stepcounter{authorCounter}
+}
+
+% \splitAuthorEmailTouple splits up the author and e-mail address
+\newcommand{\splitAuthorEmailTouple}[1]{
+    \ifthenelse{\equal{\value{authorIndex}}{0}}{%
+        \printAuthorName{#1}
+        \stepcounter{authorIndex}
+    }{%
+        \printAuthorEmail{#1}
+        \setcounter{authorIndex}{0}
+    }%
+}
+
+% \printAuthorName prints the author name
+\newcommand{\printAuthorName}[1]{
+    \sffamily \textbf{#1} \\
+}
+
+% \printAuthorEmail prints the author e-mail address
+\newcommand{\printAuthorEmail}[1]{
+    \small #1
+}

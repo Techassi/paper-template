@@ -8,25 +8,16 @@
 
 \vspace*{2\baselineskip}
 
+% Display doc type and insert vertical space if \docType is not blank
+\ifnotblank{\docType}{{\centering{\sffamily \docType} \par} \vspace*{\baselineskip}}{}
+
 {\large \centering{\textbf{\MakeUppercase{\sffamily \docTitle}}} \par}
 
-\vspace*{2\baselineskip}
+% Display sub title and insert vertical space if \docSubTitle is not blank
+\ifnotblank{\docSubTitle}{\vspace*{\baselineskip}{\centering{\textbf{\sffamily \docSubTitle}} \par}}{}
 
-\begin{center}
-    \begin{tabularx}{0.9\textwidth}{ X X X }
-        \makecell{
-        \sffamily \textbf{John Doe}       \\
-            \small john.doe@example.com
-        } &
-        \makecell{
-        \sffamily \textbf{Jane Doe}       \\
-            \small jane.doe@example.com
-        } &
-        \makecell{
-        \sffamily \textbf{Catherine Parr} \\
-            \small catherine.parr@example.com
-        }                                 \\
-    \end{tabularx}
-\end{center}
+\vspace*{\baselineskip}
 
-\vspace*{2\baselineskip}
+\printAuthors
+
+\vspace*{\baselineskip}
