@@ -19,7 +19,7 @@
 % -------------
 % Document data
 % -------------
-\newcommand{\docTitle}{Your Paper Title}
+\newcommand{\docTitle}{A LaTeX template for clean and simple papers}
 \newcommand{\docSubTitle}{}
 \newcommand{\docType}{}
 \newcommand{\docDeadline}{Submission Date}
@@ -186,6 +186,7 @@
 
 % Variables
 \newcommand{\authorList}{}
+\newcommand{\currentAffiliation}{}
 \newcounter{totalAuthorCount}
 \newcounter{authorCounter}
 \setcounter{authorCounter}{1}
@@ -213,42 +214,80 @@
 
 % \internalPrintAuthors iterates the list via \ProcessList
 \NewDocumentCommand{\internalPrintAuthors}{ >{\SplitList{,}} m }{%
-    \ProcessList{#1}{\printAuthorEmailTouple}
+    \ProcessList{#1}{\printAuthorTriple}
 }
 
-% \printAuthorEmailTouple prints the <Author, E-Mail> touple
-\NewDocumentCommand{\printAuthorEmailTouple}{ >{\SplitList{,}} m }{%
+% \printAuthorTriple prints the <Author, E-Mail, Affiliation> triple
+\NewDocumentCommand{\printAuthorTriple}{ >{\SplitList{,}} m }{%
     \ifthenelse{\equal{\intcalcMod{\value{authorCounter}}{3}}{0}}{%
         \makecell{
-            \ProcessList{#1}{\splitAuthorEmailTouple}
+            \ProcessList{#1}{\splitAuthorTriple}
         }
         \ifthenelse{\value{authorCounter}<\value{totalAuthorCount}}{\\}{}
     }{%
         \makecell{
-            \ProcessList{#1}{\splitAuthorEmailTouple}
+            \ProcessList{#1}{\splitAuthorTriple}
         }
         \ifthenelse{\(\value{totalAuthorCount}>1 \AND \value{authorCounter}<\value{totalAuthorCount}\)}{&}{}
     }%
     \stepcounter{authorCounter}
 }
 
-% \splitAuthorEmailTouple splits up the author and e-mail address
-\newcommand{\splitAuthorEmailTouple}[1]{
+% \splitAuthorTriple splits up the author, e-mail address and affiliation
+\newcommand{\splitAuthorTriple}[1]{
     \ifthenelse{\equal{\value{authorIndex}}{0}}{%
-        \printAuthorName{#1}
-        \stepcounter{authorIndex}
+        \printAuthorName{#1}%
+        \stepcounter{authorIndex}%
     }{%
-        \printAuthorEmail{#1}
-        \setcounter{authorIndex}{0}
+        \ifthenelse{\equal{\value{authorIndex}}{1}}{%
+            \printAuthorAffiliation{#1}
+            \stepcounter{authorIndex}%
+        }{%
+            \printAuthorEmail{#1}
+            \setcounter{authorIndex}{0}%
+        }%
+
     }%
 }
 
-% \printAuthorName prints the author name
-\newcommand{\printAuthorName}[1]{
-    \sffamily \textbf{#1} \\
+\newcommand{\printAuthorName}[1]{\sffamily \bfseries #1}
+\newcommand{\printAuthorEmail}[1]{\small \mdseries #1}
+\newcommand{\printAuthorAffiliation}[1]{\textsuperscript{#1} \\}
+
+% -----------
+% Affiliation
+% -----------
+\newcommand{\affiliationList}{}
+\newcounter{totalAffiliations}
+\newcounter{affiliationCounter}
+
+\newcommand{\setAffiliations}[1]{%
+    \renewcommand{\affiliationList}{#1}
+    \expandafter\forcsvlist\expandafter\countAffiliations\expandafter{\affiliationList}
 }
 
-% \printAuthorEmail prints the author e-mail address
-\newcommand{\printAuthorEmail}[1]{
-    \small #1
+\newcommand{\countAffiliations}[1]{
+    \stepcounter{totalAffiliations}
+}
+
+\newcommand{\printAffiliations}{%
+    \ifnotblank{\affiliationList}{%
+        \begin{center}
+            \begin{tabularx}{0.9\textwidth}{ X }
+                \expandafter\internalPrintAffiliations\expandafter{\affiliationList}
+            \end{tabularx}
+        \end{center}
+    }{}
+}
+
+\NewDocumentCommand{\internalPrintAffiliations}{ >{\SplitList{,}} m }{%
+    \ProcessList{#1}{\printAffiliation}
+}
+
+\newcommand{\printAffiliation}[1]{
+    \stepcounter{affiliationCounter}
+    \makecell{
+        \sffamily \small \textsuperscript{\number\value{affiliationCounter}}#1
+    }
+    \ifthenelse{\value{affiliationCounter}<\value{totalAffiliations}}{\\}{}
 }
