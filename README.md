@@ -5,7 +5,7 @@ is inspired by the ASME Conference Paper template, see [here](https://www.ctan.o
 
 ## Usage
 
-### Title, Subtitle & Type
+### Title, Subtitle & Type - [Usage](https://github.com/Techassi/paper-template/blob/main/paper.tex#L14-L16)
 
 To set the title use:
 
@@ -19,7 +19,7 @@ Similarly the subtitle can be set like:
 \setSubtitle{I am a subtitle}
 ```
 
-Last but not least the document type is set like:
+Last but not least the document type is set with:
 
 ```latex
 \setDoctype{Paper}
@@ -27,7 +27,7 @@ Last but not least the document type is set like:
 
 ![Title Example](./img/title_example.jpg)
 
-### Authors - [Usage](https://github.com/Techassi/paper-template/blob/main/paper.tex#L14)
+### Authors - [Usage](https://github.com/Techassi/paper-template/blob/main/paper.tex#L18)
 
 To print a list of authors use:
 
@@ -43,7 +43,7 @@ To print a list of authors use:
 
 All provided names will be rendered as a grid table directly under the title (and subtitle).
 
-### Affiliations - [Usage](https://github.com/Techassi/paper-template/blob/main/paper.tex#L15)
+### Affiliations - [Usage](https://github.com/Techassi/paper-template/blob/main/paper.tex#L19)
 
 ```latex
 \setAuthors{
