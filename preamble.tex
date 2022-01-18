@@ -240,7 +240,9 @@
         \stepcounter{authorIndex}%
     }{%
         \ifthenelse{\equal{\value{authorIndex}}{1}}{%
-            \printAuthorAffiliation{#1}
+            \ifthenelse{\equal{#1}{-}}{\\}{%
+                \printAuthorAffiliation{#1}%
+            }
             \stepcounter{authorIndex}%
         }{%
             \printAuthorEmail{#1}
