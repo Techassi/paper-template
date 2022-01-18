@@ -19,9 +19,6 @@
 % -------------
 % Document data
 % -------------
-\newcommand{\docTitle}{A LaTeX template for clean and simple papers}
-\newcommand{\docSubTitle}{}
-\newcommand{\docType}{}
 \newcommand{\docDeadline}{Submission Date}
 \newcommand{\docKeywords}{These, Are, Your, Keywords}
 
@@ -37,27 +34,6 @@
 % Authors
 % -------
 \newcommand{\docAuthors}{John Doe, Jane Doe, Catherine Parr}
-
-% ##################################################
-% PDF SETTINGS
-% ##################################################
-\usepackage[
-    colorlinks=true,
-    linkcolor=black,
-    citecolor=black,
-    filecolor=black,
-    urlcolor=black,
-    bookmarks=true,
-    bookmarksopen=true,
-    bookmarksopenlevel=3,
-    bookmarksnumbered,
-    plainpages=false,
-    pdfpagelabels=true,
-    hyperfootnotes,
-    pdftitle ={\docTitle},
-    pdfauthor={\docAuthors},
-    pdfcreator={\docAuthors}
-]{hyperref}
 
 % ##################################################
 % PAGE FORMATTING
@@ -180,6 +156,30 @@
     \expandafter\notblank\expandafter{#1}{#2}{#3}%
 }
 
+\newcommand{\docTitle}{This is the default title. Plese change me via \textbackslash setTitle\{~\}}
+\newcommand{\setTitle}[1]{
+    \ifnotblank{#1}{%
+        \renewcommand{\docTitle}{#1}
+        \hypersetup{
+            pdftitle ={\docTitle}
+        }
+    }{}
+}
+
+\newcommand{\docSubTitle}{}
+\newcommand{\setSubtitle}[1]{
+    \ifnotblank{#1}{%
+        \renewcommand{\docSubTitle}{#1}
+    }{}
+}
+
+\newcommand{\docType}{}
+\newcommand{\setDoctype}[1]{
+    \ifnotblank{#1}{%
+        \renewcommand{\docType}{#1}
+    }{}
+}
+
 % -------
 % Authors
 % -------
@@ -293,3 +293,25 @@
     }
     \ifthenelse{\value{affiliationCounter}<\value{totalAffiliations}}{\\}{}
 }
+
+% ##################################################
+% PDF SETTINGS
+% ##################################################
+% Do this as the last step beause the variables are set above
+\usepackage[
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black,
+    filecolor=black,
+    urlcolor=black,
+    bookmarks=true,
+    bookmarksopen=true,
+    bookmarksopenlevel=3,
+    bookmarksnumbered,
+    plainpages=false,
+    pdfpagelabels=true,
+    hyperfootnotes
+    % pdftitle ={\docTitle},
+    % pdfauthor={\docAuthors},
+    % pdfcreator={\docAuthors}
+]{hyperref}
